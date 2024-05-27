@@ -1,21 +1,21 @@
 
-# Tugas Kelompok 1
+# Capstone Mikti
 
-Simpel E-commerce Restful API dengan Go-lang
+Ticketing API with Go
 
 
 ## ERD
-[Erd Desain](https://dbdiagram.io/d/Copy-of-E-commerce-SI-664de795f84ecd1d22db8741)
+[Erd Desain](https://dbdiagram.io/d/tiketing-665093a8f84ecd1d2210a4ee)
 
-![Erd Screenshots](https://i.postimg.cc/tT9750zL/Copy-of-E-commerce-SI.png)
+![Erd Screenshots](https://i.postimg.cc/B6BmCDLh/tiketing.png)
 
 
 ## API Spec
 
-[Apidog](https://ve7gpwat88.apidog.io)
+[Apidog](https://j2ifittolg.apidog.io)
 
 
-## Anggota
+## Contributors
 
 - [Haerul](https://www.github.com/haerul-umam)
 - [Radya](https://www.github.com/Nrjtiii)
