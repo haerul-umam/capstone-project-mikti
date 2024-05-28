@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/haerul-umam/tugas-mikti-kel1/helper"
-	"github.com/haerul-umam/tugas-mikti-kel1/model/web"
+	"github.com/haerul-umam/capstone-project-mikti/helper"
+	"github.com/haerul-umam/capstone-project-mikti/model/web"
 	"github.com/labstack/echo/v4"
 
 	"github.com/golang-jwt/jwt/v5"

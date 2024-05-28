@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/haerul-umam/tugas-mikti-kel1/helper"
+	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )

@@ -5,7 +5,7 @@ package main
 
 import (
 	"github.com/google/wire"
-	"github.com/haerul-umam/tugas-mikti-kel1/app"
+	"github.com/haerul-umam/capstone-project-mikti/app"
 	"github.com/labstack/echo/v4"
 )
 
