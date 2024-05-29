@@ -25,6 +25,7 @@ func Router(
 
 	// Auth Controller
 	e.POST("/v1/login", authController.Login)
+	e.POST("/v1/register", authController.Register)
 
 	return e
 }

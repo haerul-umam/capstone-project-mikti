@@ -9,7 +9,7 @@ type UserRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) * UserRepositoryImpl {
+func NewUserRepository(db *gorm.DB) *UserRepositoryImpl {
 	return &UserRepositoryImpl{db}
 }
 
@@ -18,6 +18,16 @@ func (repo *UserRepositoryImpl) GetUserByEmail(email string) (*domain.User, erro
 
 	if err := repo.db.Where("email = ?", email).Take(&user).Error; err != nil {
 		return user, err
+	}
+
+	return user, nil
+}
+
+func (repo *UserRepositoryImpl) SaveUser(user domain.User) (domain.User, error) {
+	err := repo.db.Create(&user).Error
+
+	if err != nil {
+		return domain.User{}, err
 	}
 
 	return user, nil
