@@ -1,0 +1,12 @@
+{
+	"editor.formatOnSave": true,
+	"explorer.confirmDelete": false,
+	"go.toolsManagement.autoUpdate": true,
+	"editor.tabSize": 2,
+	"prettier.useTabs": true,
+	"files.autoSave": "afterDelay",
+	"files.eol": "\n",
+	"gopls": {
+		"build.standaloneTags": ["ignore", "wireinject", "!wireinject"]
+	}
+}
