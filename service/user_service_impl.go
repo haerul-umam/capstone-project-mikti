@@ -14,7 +14,7 @@ import (
 )
 
 type UserServiceImpl struct {
-	repo repository.UserRepository
+	repo         repository.UserRepository
 	tokenUseCase helper.TokenUseCase
 }
 
@@ -40,10 +40,10 @@ func (service *UserServiceImpl) LoginUser(email, password string) (web.UserLogin
 	expired := time.Now().Local().Add(time.Duration(expired_minutes) * time.Minute)
 
 	claims := &helper.JwtClaims{
-		ID: string(user.UserID),
+		ID:    string(user.UserID),
 		Email: user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer: "ticketing",
+			Issuer:    "ticketing",
 			ExpiresAt: jwt.NewNumericDate(expired),
 		},
 	}
@@ -57,6 +57,6 @@ func (service *UserServiceImpl) LoginUser(email, password string) (web.UserLogin
 	return web.UserLoginResponse{
 		Token: token,
 		Email: user.Email,
-		Role: string(user.Role),
+		Role:  string(user.Role),
 	}, nil
 }
