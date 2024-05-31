@@ -14,6 +14,8 @@ import (
 func Router(
 	authController controller.AuthController,
 	orderController controller.OrderController,
+	categoryContoller controller.CategoryEventController,
+
 ) *echo.Echo {
 	err := godotenv.Load()
 	if err != nil {
@@ -40,6 +42,11 @@ func Router(
 	buyerRoutes.Use(customMiddleware.JWTAuthRole("BUYER"))
 	buyerRoutes.POST("/v1/order", orderController.CreateOrder)
 	buyerRoutes.GET("/v1/detail/:id", orderController.DetailOrder)
+
+	// Category Controller
+	adminRoutes.POST("/v1/category", categoryContoller.NewCategory)
+	adminRoutes.GET("/v1/categories", categoryContoller.GetCategoryList)
+	adminRoutes.PATCH("/v1/category/:id", categoryContoller.UpdateCategory)
 
 	return e
 }

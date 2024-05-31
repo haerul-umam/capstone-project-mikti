@@ -35,11 +35,21 @@ var orderSet = wire.NewSet(
 	wire.Bind(new(controller.OrderController), new(*controller.OrderControllerImpl)),
 )
 
+var categorySet = wire.NewSet(
+	repository.NewCategoryRepository,
+	wire.Bind(new(repository.CategoryRepository), new(*repository.CategoryRepositoryImpl)),
+	service.NewCategoryService,
+	wire.Bind(new(service.CategoryService), new(*service.CategoryServiceImpl)),
+	controller.NewCategoryController,
+	wire.Bind(new(controller.CategoryEventController), new(*controller.CategoryContollerImpl)),
+)
+
 func StartServer() *echo.Echo {
 	wire.Build(
 		app.InitConnetion,
 		authSet,
 		orderSet,
+		categorySet,
 		app.Router,
 	)
 	return nil
