@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type Event struct {
-	Id          int    `gorm:"column:id;primaryKey:type:serial"`
+	Id          int    `gorm:"column:id;primaryKey;type:serial"`
 	CategoryID  int    `gorm:"column:category_id"`
 	Name        string `gorm:"column:name"`
 	Date        string `gorm:"column:date"`

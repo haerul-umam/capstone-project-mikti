@@ -37,7 +37,7 @@ func (service *OrderServiceImpl) CreateOrder(request web.OrderRequest, userID st
 		return web.OrderResponse{}, errors.New("qouta tidak mencukupi")
 	}
 
-	// create order ke db
+	// create order to db
 	order := domain.Order{
 		EventID:       getEvent.Id,
 		UserID:        userID,
