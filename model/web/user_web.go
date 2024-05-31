@@ -8,13 +8,13 @@ type UserLoginRequest struct {
 type UserLoginResponse struct {
 	Token string `json:"token"`
 	Email string `json:"email"`
-	Role 	string `json:"role"`
+	Role  string `json:"role"`
 }
 
 type UserRegisterRequest struct {
 	Name     string `validate:"required" json:"name"`
 	Email    string `validate:"required,email" json:"email"`
-	Password string `validate:"required" json:"password"`
+	Password string `validate:"required,len=8" json:"password"`
 }
 
 type UserRegisterResponse struct {
