@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
 	"gorm.io/gorm"
 )
@@ -24,6 +26,14 @@ func (repo *UserRepositoryImpl) GetUserByEmail(email string) (*domain.User, erro
 }
 
 func (repo *UserRepositoryImpl) SaveUser(user domain.User) (domain.User, error) {
+	var existingUserData domain.User
+
+	errEmail := repo.db.First(&existingUserData, "email = ?", user.Email).Error
+
+	if errEmail == nil {
+		return domain.User{}, errors.New("user sudah terdaftar")
+	}
+
 	err := repo.db.Create(&user).Error
 
 	if err != nil {
@@ -31,4 +41,5 @@ func (repo *UserRepositoryImpl) SaveUser(user domain.User) (domain.User, error) 
 	}
 
 	return user, nil
+
 }
