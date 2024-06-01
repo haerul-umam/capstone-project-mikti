@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"errors"
 	"os"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -8,14 +9,14 @@ import (
 )
 
 type JwtClaims struct {
-	ID 		string `json:"user_id"`
-	Email string `json:"email"`
+	ID 		string   `json:"user_id"`
+	Email string 	 `json:"email"`
+	Role  string   `json:"role"`
 	jwt.RegisteredClaims
 }
 
 type TokenUseCase interface {
 	GenerateAccessToken(claims JwtClaims) (string, error)
-	GetClaimsValue(c echo.Context) (JwtClaims)
 }
 
 type TokenUseCaseImpl struct{}
@@ -35,8 +36,17 @@ func (t *TokenUseCaseImpl) GenerateAccessToken(claims JwtClaims) (string, error)
 	return encodedToken, nil
 }
 
-func (t *TokenUseCaseImpl) GetClaimsValue(c echo.Context) (JwtClaims) {
+func GetClaimsValue(c echo.Context) (JwtClaims) {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JwtClaims)
 	return *claims
+} 
+
+func ValidateRoleJWT(c echo.Context, role string) error {
+	claims := GetClaimsValue(c)
+
+	if claims.Role != role {
+		return errors.New("forbidden resource")
+	}
+	return nil
 }

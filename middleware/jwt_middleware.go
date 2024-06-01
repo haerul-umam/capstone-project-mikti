@@ -26,3 +26,20 @@ func JWTProtection() echo.MiddlewareFunc {
 		},
 	})
 }
+
+func JWTAuthRole(role string) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+	
+			err := helper.ValidateRoleJWT(c, role)
+			if err != nil {
+				return c.JSON(
+					http.StatusUnauthorized,
+					web.ResponseToClient(http.StatusUnauthorized, err.Error(), nil),
+				)
+			}
+	
+			return next(c)
+		}
+	}
+}

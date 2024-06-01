@@ -43,6 +43,7 @@ func (service *UserServiceImpl) LoginUser(email, password string) (web.UserLogin
 	claims := &helper.JwtClaims{
 		ID:    string(user.UserID),
 		Email: user.Email,
+		Role: string(user.Role),
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "ticketing",
 			ExpiresAt: jwt.NewNumericDate(expired),
