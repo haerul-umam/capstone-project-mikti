@@ -5,14 +5,15 @@ import (
 
 	"github.com/haerul-umam/capstone-project-mikti/controller"
 	"github.com/haerul-umam/capstone-project-mikti/helper"
+	customMiddleware "github.com/haerul-umam/capstone-project-mikti/middleware"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
-	customMiddleware "github.com/haerul-umam/capstone-project-mikti/middleware"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func Router(
 	authController controller.AuthController,
+	orderController controller.OrderController,
 ) *echo.Echo {
 	err := godotenv.Load()
 	if err != nil {
@@ -36,6 +37,7 @@ func Router(
 	buyerRoutes := e.Group("/api")
 	buyerRoutes.Use(customMiddleware.JWTProtection())
 	buyerRoutes.Use(customMiddleware.JWTAuthRole("BUYER"))
+	buyerRoutes.POST("/v1/order", orderController.CreateOrder)
 
 	return e
 }

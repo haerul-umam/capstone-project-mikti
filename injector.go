@@ -24,10 +24,22 @@ var authSet = wire.NewSet(
 	wire.Bind(new(controller.AuthController), new(*controller.AuthControllerImpl)),
 )
 
+var orderSet = wire.NewSet(
+	repository.NewOrderRepository,
+	wire.Bind(new(repository.OrderRepository), new(*repository.OrderRepositoryImpl)),
+	repository.NewEventRepository,
+	wire.Bind(new(repository.EventRepository), new(*repository.EventRepositoryImpl)),
+	service.NewOrderService,
+	wire.Bind(new(service.OrderService), new(*service.OrderServiceImpl)),
+	controller.NewOrderController,
+	wire.Bind(new(controller.OrderController), new(*controller.OrderControllerImpl)),
+)
+
 func StartServer() *echo.Echo {
 	wire.Build(
 		app.InitConnetion,
 		authSet,
+		orderSet,
 		app.Router,
 	)
 	return nil

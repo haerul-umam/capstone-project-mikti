@@ -63,6 +63,7 @@ func (service *UserServiceImpl) LoginUser(email, password string) (web.UserLogin
 	}, nil
 }
 
+
 func (service *UserServiceImpl) SaveUser(request web.UserRegisterRequest) (web.UserRegisterResponse, error) {
 	passHash, errHash := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.MinCost)
 	if errHash != nil {
