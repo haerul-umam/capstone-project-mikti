@@ -7,14 +7,6 @@ type CategoryEntity struct {
 	Name string `json:"name"`
 }
 
-type CategoryList struct {
-	Name string `json:"name"`
-}
-
-func ToCategoryList(name string) CategoryList {
-	return CategoryList{name}
-}
-
 func ToCategoryEntity(id int, name string) CategoryEntity {
 	return CategoryEntity{id, name}
 }

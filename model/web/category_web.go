@@ -4,7 +4,7 @@ type CategoryRequest struct {
 	Name string `validate:"required" json:"name"`
 }
 
-type CategoryCreateResponse struct {
+type CategoryResponse struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
 }

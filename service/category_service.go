@@ -6,7 +6,7 @@ import (
 )
 
 type CategoryService interface {
-	CreateCategory(name string) (web.CategoryCreateResponse, error)
+	CreateCategory(name string) (web.CategoryResponse, error)
 	GetCategoryList() ([]entity.CategoryEntity, error)
-	UpdateCategory(request web.CategoryUpdateServiceRequest, pathId int) (map[string]interface{}, error)
+	UpdateCategory(request web.CategoryUpdateServiceRequest, pathId int) (web.CategoryResponse, error)
 }

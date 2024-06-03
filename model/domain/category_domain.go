@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type Category struct {
-	Id        int    `gorm:"column:id;primaryKey;type:serial"`
+	ID        int    `gorm:"column:id;primaryKey;autoIncrement"`
 	Name      string `gorm:"column:name"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
