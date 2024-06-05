@@ -2,8 +2,10 @@ package service
 
 import (
 	"errors"
+	"math"
 
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
+	"github.com/haerul-umam/capstone-project-mikti/model/entity"
 	"github.com/haerul-umam/capstone-project-mikti/model/web"
 	"github.com/haerul-umam/capstone-project-mikti/repository"
 )
@@ -71,5 +73,27 @@ func (service *OrderServiceImpl) CreateOrder(request web.OrderRequest, userID st
 		OrderID: createdOrder.OrderID,
 		Amount:  createdOrder.Amount,
 		Status:  createdOrder.Status,
+	}, nil
+}
+
+func (service *OrderServiceImpl) GetOrderListOnPage(request web.OrdersPageRequest) (web.OrdersPageResponse, error) {
+	orderReq := web.OrdersPageRequest{
+		Limit: request.Limit,
+		Page:  request.Page,
+	}
+	getOrderList, total, errGetOrderList := service.repository.GetOrdersPage(orderReq.Limit, orderReq.Page)
+
+	if errGetOrderList != nil {
+		return web.OrdersPageResponse{}, errGetOrderList
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(orderReq.Limit)))
+	orders := entity.ToOrderListOnPageEntities(getOrderList)
+
+	return web.OrdersPageResponse{
+		Total:       total,
+		TotalPages:  totalPages,
+		CurrentPage: orderReq.Page,
+		Orders:      orders,
 	}, nil
 }

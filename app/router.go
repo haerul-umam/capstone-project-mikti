@@ -33,6 +33,7 @@ func Router(
 	adminRoutes := e.Group("/api/admin")
 	adminRoutes.Use(customMiddleware.JWTProtection())
 	adminRoutes.Use(customMiddleware.JWTAuthRole("ADMIN"))
+	adminRoutes.GET("/v1/order", orderController.GetOrdersPage)
 
 	buyerRoutes := e.Group("/api")
 	buyerRoutes.Use(customMiddleware.JWTProtection())

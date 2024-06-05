@@ -22,3 +22,22 @@ func (repo *OrderRepositoryImpl) CreateOrder(order domain.Order) (domain.Order, 
 
 	return order, nil
 }
+
+func (repo *OrderRepositoryImpl) GetOrdersPage(limit int, page int) ([]domain.Order, int64, error) {
+	var orders []domain.Order
+	offset := (page - 1) * limit
+
+	errData := repo.db.Limit(limit).Offset(offset).Find(&orders).Error
+
+	if errData != nil {
+		return []domain.Order{}, 0, errData
+	}
+
+	var total int64
+	errTotal := repo.db.Model(&domain.Order{}).Count(&total).Error
+	if errTotal != nil {
+		return []domain.Order{}, 0, errTotal
+	}
+
+	return orders, total, nil
+}
