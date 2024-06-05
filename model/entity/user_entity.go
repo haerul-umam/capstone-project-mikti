@@ -5,10 +5,10 @@ import (
 )
 
 type UserEntity struct {
-	UserID string 	 	 `json:"id"`
-	Name	 string 		 `json:"name"`
-	Email	 string 		 `json:"email"`
-	Role	 domain.Role `json:"role"`
+	UserID string      `json:"id"`
+	Name   string      `json:"name"`
+	Email  string      `json:"email"`
+	Role   domain.Role `json:"role"`
 }
 
 func ToUserEntity(id, name, email string, role domain.Role) UserEntity {

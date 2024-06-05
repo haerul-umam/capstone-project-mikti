@@ -41,12 +41,12 @@ func (service *OrderServiceImpl) CreateOrder(request web.OrderRequest, userID st
 
 	// create order to db
 	order := domain.Order{
-		EventID:       getEvent.Id,
+		EventID:       getEvent.EventID,
 		UserID:        userID,
 		NameEvent:     getEvent.Name,
 		DateEvent:     getEvent.Date,
 		PriceEvent:    getEvent.Price,
-		IsFree:        getEvent.IsFree,
+		IsFree:        getEvent.Is_free,
 		Description:   getEvent.Description,
 		City:          getEvent.City,
 		Quantity:      orderReq.Quantity,

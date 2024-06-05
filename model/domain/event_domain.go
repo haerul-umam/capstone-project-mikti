@@ -15,7 +15,6 @@ type Event struct {
 	Quota       int      `gorm:"quota"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   time.Time
 }
 
 func (event *Event) TableName() string {

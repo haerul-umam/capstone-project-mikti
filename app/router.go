@@ -14,6 +14,8 @@ import (
 func Router(
 	authController controller.AuthController,
 	orderController controller.OrderController,
+	eventController controller.EventController,
+
 	categoryContoller controller.CategoryEventController,
 
 ) *echo.Echo {
@@ -48,6 +50,8 @@ func Router(
 	adminRoutes.GET("/v1/categories", categoryContoller.GetCategoryList)
 	adminRoutes.PATCH("/v1/category/:id", categoryContoller.UpdateCategory)
 	adminRoutes.DELETE("/v1/category/:id", categoryContoller.DeleteCategory)
+	e.GET("/v1/event/:event_id", eventController.GetEvent)
+	e.PATCH("/v1/event/:event_id", eventController.UpdateEvent)
 
 	return e
 }

@@ -44,12 +44,22 @@ var categorySet = wire.NewSet(
 	wire.Bind(new(controller.CategoryEventController), new(*controller.CategoryContollerImpl)),
 )
 
+var eventSet = wire.NewSet(
+	repository.NewEventRepository,
+	wire.Bind(new(repository.EventRepository), new(*repository.EventRepositoryImpl)),
+	service.NewEventService,
+	wire.Bind(new(service.EventService), new(*service.EventServiceImpl)),
+	controller.NewEventController,
+	wire.Bind(new(controller.EventController), new(*controller.EventControllerImpl)),
+)
+
 func StartServer() *echo.Echo {
 	wire.Build(
 		app.InitConnetion,
 		authSet,
 		orderSet,
 		categorySet,
+		eventSet,
 		app.Router,
 	)
 	return nil
