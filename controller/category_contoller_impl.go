@@ -64,3 +64,15 @@ func (controller *CategoryContollerImpl) UpdateCategory(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "sukses ubah kategori", categoryUpdate))
 }
+
+func (controller *CategoryContollerImpl) DeleteCategory(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := controller.categoryService.DeleteCategory(uint(id)) // Konversi int ke uint
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
+	}
+
+	return c.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "Kategori Berhasil Dihapus", nil))
+}

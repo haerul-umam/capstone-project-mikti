@@ -9,4 +9,5 @@ type CategoryService interface {
 	CreateCategory(name string) (web.CategoryResponse, error)
 	GetCategoryList() ([]entity.CategoryEntity, error)
 	UpdateCategory(request web.CategoryUpdateServiceRequest, pathId int) (web.CategoryResponse, error)
+	DeleteCategory(categoryID uint) error
 }

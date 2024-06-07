@@ -50,3 +50,18 @@ func (repo *CategoryRepositoryImpl) UpdateCategory(category domain.Category) (do
 	}
 	return category, nil
 }
+
+func (repo *CategoryRepositoryImpl) DeleteCategory(categoryID uint) error {
+	var category domain.Category
+	err := repo.db.First(&category, "id = ?", categoryID).Error
+	if err != nil {
+		return errors.New("category tidak ditemukan")
+	}
+
+	err = repo.db.Delete(&category).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

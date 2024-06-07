@@ -47,6 +47,7 @@ func Router(
 	adminRoutes.POST("/v1/category", categoryContoller.NewCategory)
 	adminRoutes.GET("/v1/categories", categoryContoller.GetCategoryList)
 	adminRoutes.PATCH("/v1/category/:id", categoryContoller.UpdateCategory)
+	adminRoutes.DELETE("/v1/category/:id", categoryContoller.DeleteCategory)
 
 	return e
 }
