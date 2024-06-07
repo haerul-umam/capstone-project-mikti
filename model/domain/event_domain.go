@@ -3,16 +3,16 @@ package domain
 import "time"
 
 type Event struct {
-	Id          int      `gorm:"column:id;primaryKey;type:serial"`
-	CategoryID  int      `gorm:"column:category_id"`
+	EventID     int `gorm:"column:id;primaryKey;autoIncrement"`
+	CategoryID  int
 	Category    Category `gorm:"foreignKey:category_id"`
-	Name        string   `gorm:"column:name"`
-	Date        string   `gorm:"column:date"`
-	Price       int      `gorm:"column:price"`
-	IsFree      bool     `gorm:"column:is_free"`
-	City        string   `gorm:"city"`
-	Description string   `gorm:"description"`
-	Quota       int      `gorm:"quota"`
+	Name        string
+	Date        string
+	Price       int
+	Is_free     bool
+	City        string
+	Description string
+	Quota       int
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

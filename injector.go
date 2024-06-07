@@ -27,8 +27,6 @@ var authSet = wire.NewSet(
 var orderSet = wire.NewSet(
 	repository.NewOrderRepository,
 	wire.Bind(new(repository.OrderRepository), new(*repository.OrderRepositoryImpl)),
-	repository.NewEventRepository,
-	wire.Bind(new(repository.EventRepository), new(*repository.EventRepositoryImpl)),
 	service.NewOrderService,
 	wire.Bind(new(service.OrderService), new(*service.OrderServiceImpl)),
 	controller.NewOrderController,

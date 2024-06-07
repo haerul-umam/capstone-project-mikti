@@ -17,15 +17,30 @@ func NewEventService(repository repository.EventRepository) *EventServiceImpl {
 	}
 }
 
-func (service *EventServiceImpl) GetEvent(eventId int) (entity.EventEntity, error) {
+func (service *EventServiceImpl) GetEvent(eventId int) (interface{}, error) {
 	getEvent, errGetEvent := service.repository.GetEvent(eventId)
 
 	if errGetEvent != nil {
-		return entity.EventEntity{}, errGetEvent
+		return web.EventDetailResponse{}, errGetEvent
 	}
 
-	return entity.ToEventEntity(getEvent), nil
+	return web.EventDetailResponse{
+		ItemID:      getEvent.EventID,
+		CategoryID:  getEvent.CategoryID,
+		Name:        getEvent.Name,
+		Date:        getEvent.Date,
+		Price:       getEvent.Price,
+		Is_free:     getEvent.Is_free,
+		City:        getEvent.City,
+		Description: getEvent.Description,
+		Quota:       getEvent.Quota,
+		Category: web.Category{
+			Id:   getEvent.Category.CategoryID,
+			Name: getEvent.Category.Name,
+		},
+	}, nil
 }
+
 func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceRequest, pathID int) (interface{}, error) {
 	getEventById, err := service.repository.GetEvent(pathID)
 
@@ -51,5 +66,15 @@ func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceReque
 		return entity.ToEventEntity(eventUpdate), errUpdate
 	}
 
-	return entity.ToEventEntity(eventUpdate), errUpdate
+	return web.EventUpdateResponse{
+		ItemID:      getEventById.EventID,
+		CategoryID:  request.CategoryID,
+		Name:        request.Name,
+		Date:        request.Date,
+		Price:       request.Price,
+		Is_free:     request.Is_free,
+		City:        request.City,
+		Description: request.Description,
+		Quota:       request.Quota,
+	}, errUpdate
 }

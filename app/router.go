@@ -34,10 +34,13 @@ func Router(
 	e.POST("/v1/login", authController.Login)
 	e.POST("/v1/register", authController.Register)
 
+	e.GET("/v1/event/:event_id", eventController.GetEvent)
+
 	adminRoutes := e.Group("/api/admin")
 	adminRoutes.Use(customMiddleware.JWTProtection())
 	adminRoutes.Use(customMiddleware.JWTAuthRole("ADMIN"))
 	adminRoutes.GET("/v1/order", orderController.GetOrdersPage)
+	adminRoutes.PATCH("/v1/event/:event_id", eventController.UpdateEvent)
 
 	buyerRoutes := e.Group("/api")
 	buyerRoutes.Use(customMiddleware.JWTProtection())
@@ -50,8 +53,6 @@ func Router(
 	adminRoutes.GET("/v1/categories", categoryContoller.GetCategoryList)
 	adminRoutes.PATCH("/v1/category/:id", categoryContoller.UpdateCategory)
 	adminRoutes.DELETE("/v1/category/:id", categoryContoller.DeleteCategory)
-	e.GET("/v1/event/:event_id", eventController.GetEvent)
-	e.PATCH("/v1/event/:event_id", eventController.UpdateEvent)
 
 	return e
 }
