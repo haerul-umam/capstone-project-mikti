@@ -39,6 +39,7 @@ func Router(
 	buyerRoutes.Use(customMiddleware.JWTProtection())
 	buyerRoutes.Use(customMiddleware.JWTAuthRole("BUYER"))
 	buyerRoutes.POST("/v1/order", orderController.CreateOrder)
+	buyerRoutes.GET("/v1/detail/:id", orderController.DetailOrder)
 
 	return e
 }

@@ -97,3 +97,31 @@ func (service *OrderServiceImpl) GetOrderListOnPage(request web.OrdersPageReques
 		Orders:      orders,
 	}, nil
 }
+
+func (service *OrderServiceImpl) GetDetailOrder(Id string, userID string) (web.DetailOrderResponse, error) {
+	category, getOrder, errGetOrder := service.repository.GetDetailOrder(Id)
+
+	if errGetOrder != nil {
+		return web.DetailOrderResponse{}, errGetOrder
+	}
+
+	if userID != getOrder.UserID {
+		return web.DetailOrderResponse{}, errors.New("user tidak sesuai")
+	}
+
+	return web.DetailOrderResponse{
+		OrderID:       getOrder.OrderID,
+		Costumer:      web.Costumer{Name: getOrder.User.Name},
+		NameEvent:     getOrder.NameEvent,
+		Quantity:      getOrder.Quantity,
+		Amount:        getOrder.Amount,
+		DateEvent:     getOrder.DateEvent,
+		PriceEvent:    getOrder.PriceEvent,
+		IsFree:        getOrder.IsFree,
+		City:          getOrder.City,
+		Description:   getOrder.Description,
+		Category:      web.Category{Name: category.Name},
+		StatusPayment: getOrder.Status,
+		PaymentMethod: getOrder.PaymentMethod,
+	}, nil
+}

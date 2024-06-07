@@ -28,3 +28,27 @@ type OrdersPageResponse struct {
 	CurrentPage int                        `json:"currentPage"`
 	Orders      []entity.OrderOnPageEntity `json:"orders"`
 }
+
+type Costumer struct {
+	Name string `json:"name"`
+}
+
+type Category struct {
+	Name string `json:"name"`
+}
+
+type DetailOrderResponse struct {
+	OrderID       string         `json:"order_id"`
+	Costumer      Costumer       `json:"costumer"`
+	NameEvent     string         `json:"name_event"`
+	Quantity      int            `json:"quantity"`
+	Amount        int            `json:"amount"`
+	DateEvent     string         `json:"date_event"`
+	PriceEvent    int            `json:"price_event"`
+	IsFree        bool           `json:"is_free"`
+	City          string         `json:"city"`
+	Description   string         `json:"description"`
+	Category      Category       `json:"category"`
+	StatusPayment domain.Status  `json:"status_payment"`
+	PaymentMethod domain.Payment `json:"payment_method"`
+}

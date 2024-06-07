@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
 	"gorm.io/gorm"
 )
@@ -40,4 +42,38 @@ func (repo *OrderRepositoryImpl) GetOrdersPage(limit int, page int) ([]domain.Or
 	}
 
 	return orders, total, nil
+}
+
+func (repo *OrderRepositoryImpl) GetDetailOrder(Id string) (domain.Category, domain.Order, error) {
+	var orderData domain.Order
+
+	err := repo.db.First(&orderData, "id = ?", Id).Error
+
+	if err != nil {
+		return domain.Category{}, domain.Order{}, errors.New("order tidak ditemukan")
+	}
+
+	errUser := repo.db.Model(&domain.Order{}).Preload("User").Find(&orderData).Error
+
+	if errUser != nil {
+		return domain.Category{}, domain.Order{}, errUser
+	}
+
+	var eventData domain.Event
+
+	errEvent := repo.db.First(&eventData, "id = ?", orderData.EventID).Error
+
+	if errEvent != nil {
+		return domain.Category{}, domain.Order{}, errEvent
+	}
+
+	var categoryData domain.Category
+
+	errCategory := repo.db.First(&categoryData, "id = ?", eventData.CategoryID).Error
+
+	if errCategory != nil {
+		return domain.Category{}, domain.Order{}, errEvent
+	}
+
+	return categoryData, orderData, nil
 }

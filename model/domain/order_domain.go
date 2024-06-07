@@ -37,6 +37,7 @@ type Order struct {
 	PaymentMethod Payment `gorm:"column:payment_method;type:enum('CREDIT', 'DEBIT', 'VA', 'EWALLET')"`
 	Amount        int     `gorm:"column:amount"`
 	Status        Status  `gorm:"column:status;type:enum('MENUNGGU', 'DITERIMA', 'DITOLAK')"`
+	User          User    `gorm:"foreignKey:user_id"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }

@@ -59,3 +59,13 @@ func (controller *OrderControllerImpl) GetOrdersPage(e echo.Context) error {
 
 	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "Sukses", orderData))
 }
+
+func (controller *OrderControllerImpl) DetailOrder(e echo.Context) error {
+	getOrder, errGetOrder := controller.orderService.GetDetailOrder(e.Param("id"), helper.GetClaimsValue(e).ID)
+
+	if errGetOrder != nil {
+		return e.JSON(http.StatusNotFound, web.ResponseToClient(http.StatusNotFound, errGetOrder.Error(), nil))
+	}
+
+	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "success", getOrder))
+}
