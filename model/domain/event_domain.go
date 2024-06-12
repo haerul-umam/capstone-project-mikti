@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Event struct {
 	EventID     int `gorm:"column:id;primaryKey;autoIncrement"`
@@ -15,6 +19,7 @@ type Event struct {
 	Quota       int
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at"`
 }
 
 func (event *Event) TableName() string {

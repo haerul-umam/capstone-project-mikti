@@ -1,6 +1,9 @@
 package service
 
 import (
+	"errors"
+
+	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
 	"github.com/haerul-umam/capstone-project-mikti/model/entity"
 	"github.com/haerul-umam/capstone-project-mikti/model/web"
@@ -17,28 +20,54 @@ func NewEventService(repository repository.EventRepository) *EventServiceImpl {
 	}
 }
 
-func (service *EventServiceImpl) GetEvent(eventId int) (interface{}, error) {
+func (service *EventServiceImpl) GetEvent(eventId int, user helper.JwtClaims) (interface{}, error) {
+
 	getEvent, errGetEvent := service.repository.GetEvent(eventId)
 
-	if errGetEvent != nil {
-		return web.EventDetailResponse{}, errGetEvent
-	}
+	if user.ID != "" {
 
-	return web.EventDetailResponse{
-		ItemID:      getEvent.EventID,
-		CategoryID:  getEvent.CategoryID,
-		Name:        getEvent.Name,
-		Date:        getEvent.Date,
-		Price:       getEvent.Price,
-		Is_free:     getEvent.Is_free,
-		City:        getEvent.City,
-		Description: getEvent.Description,
-		Quota:       getEvent.Quota,
-		Category: web.Category{
-			Id:   getEvent.Category.CategoryID,
-			Name: getEvent.Category.Name,
-		},
-	}, nil
+		if errGetEvent != nil {
+			return web.EventDetailResponseAdmin{}, errGetEvent
+		}
+
+		return web.EventDetailResponseAdmin{
+			ItemID:      getEvent.EventID,
+			CategoryID:  getEvent.CategoryID,
+			Name:        getEvent.Name,
+			Date:        getEvent.Date,
+			Price:       getEvent.Price,
+			Is_free:     getEvent.Is_free,
+			City:        getEvent.City,
+			Description: getEvent.Description,
+			Quota:       getEvent.Quota,
+			DeletedAt:   getEvent.DeletedAt,
+			Category: web.Category{
+				Id:   getEvent.Category.CategoryID,
+				Name: getEvent.Category.Name,
+			},
+		}, nil
+
+	} else if getEvent.DeletedAt.Valid {
+		return web.EventDetailResponse{}, errors.New("event tidak ditemukan")
+
+	} else {
+		return web.EventDetailResponse{
+			ItemID:      getEvent.EventID,
+			CategoryID:  getEvent.CategoryID,
+			Name:        getEvent.Name,
+			Date:        getEvent.Date,
+			Price:       getEvent.Price,
+			Is_free:     getEvent.Is_free,
+			City:        getEvent.City,
+			Description: getEvent.Description,
+			Quota:       getEvent.Quota,
+			Category: web.Category{
+				Id:   getEvent.Category.CategoryID,
+				Name: getEvent.Category.Name,
+			},
+		}, nil
+
+	}
 }
 
 func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceRequest, pathID int) (interface{}, error) {
@@ -77,4 +106,14 @@ func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceReque
 		Description: request.Description,
 		Quota:       request.Quota,
 	}, errUpdate
+}
+
+func (service *EventServiceImpl) DeleteEvent(pathId int) error {
+	err := service.repository.DeleteEvent(pathId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

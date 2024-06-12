@@ -6,4 +6,5 @@ type EventRepository interface {
 	GetEvent(Id int) (domain.Event, error)
 	DecreaseQouta(event domain.Event) (domain.Event, error)
 	UpdateEvent(event domain.Event) (domain.Event, error)
+	DeleteEvent(Id int) error
 }
