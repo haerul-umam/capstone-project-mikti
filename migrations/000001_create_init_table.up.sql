@@ -30,8 +30,7 @@ CREATE TABLE "category_event" (
   "id" serial PRIMARY KEY,
   "name" varchar(255),
   "created_at" timestamp DEFAULT current_timestamp,
-  "updated_at" timestamp,
-  "deleted_at" TIMESTAMP NULL
+  "updated_at" timestamp
 );
 
 CREATE TABLE "event" (

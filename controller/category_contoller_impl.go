@@ -68,7 +68,7 @@ func (controller *CategoryContollerImpl) UpdateCategory(c echo.Context) error {
 func (controller *CategoryContollerImpl) DeleteCategory(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	err := controller.categoryService.DeleteCategory(uint(id)) // Konversi int ke uint
+	err := controller.categoryService.DeleteCategory(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))

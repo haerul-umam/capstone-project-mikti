@@ -6,5 +6,5 @@ type CategoryRepository interface {
 	CreateCategory(category domain.Category) (domain.Category, error)
 	GetCategories() ([]domain.Category, error)
 	UpdateCategory(category domain.Category) (domain.Category, error)
-	DeleteCategory(categoryID uint) error
+	DeleteCategory(id int) error
 }

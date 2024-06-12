@@ -55,12 +55,10 @@ func (service *CategoryServiceImpl) UpdateCategory(request web.CategoryUpdateSer
 	return web.CategoryResponse{ID: updateCategory.ID, Name: updateCategory.Name}, nil
 }
 
-func (service *CategoryServiceImpl) DeleteCategory(pathId uint) error {
-	err := service.repository.DeleteCategory(uint(pathId))
-
+func (service *CategoryServiceImpl) DeleteCategory(id int) error {
+	err := service.repository.DeleteCategory(id)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

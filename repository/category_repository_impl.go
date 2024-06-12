@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"time"
 
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
 	"gorm.io/gorm"
@@ -27,7 +28,7 @@ func (repo *CategoryRepositoryImpl) CreateCategory(category domain.Category) (do
 func (repo *CategoryRepositoryImpl) GetCategories() ([]domain.Category, error) {
 	var categories []domain.Category
 
-	err := repo.db.Find(&categories).Error
+	err := repo.db.Where("deleted_at TIMESTAMP").Find(&categories).Error
 
 	if err != nil {
 		return []domain.Category{}, err
@@ -51,17 +52,7 @@ func (repo *CategoryRepositoryImpl) UpdateCategory(category domain.Category) (do
 	return category, nil
 }
 
-func (repo *CategoryRepositoryImpl) DeleteCategory(categoryID uint) error {
-	var category domain.Category
-	err := repo.db.First(&category, "id = ?", categoryID).Error
-	if err != nil {
-		return errors.New("category tidak ditemukan")
-	}
-
-	err = repo.db.Delete(&category).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (repo *CategoryRepositoryImpl) DeleteCategory(id int) error {
+	now := time.Now()
+	return repo.db.Model(&domain.Category{}).Where("id = ?", id).Update("deleted_at", &now).Error
 }

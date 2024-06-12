@@ -1,0 +1,1 @@
+alter table "category_event" drop COLUMN "deleted_at"
