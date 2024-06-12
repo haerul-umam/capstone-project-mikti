@@ -10,6 +10,8 @@ import (
 	"github.com/haerul-umam/capstone-project-mikti/repository"
 )
 
+type PaymentResponse map[string]interface{}
+
 type OrderServiceImpl struct {
 	repository repository.OrderRepository
 	event      repository.EventRepository
@@ -124,4 +126,26 @@ func (service *OrderServiceImpl) GetDetailOrder(Id string, userID string) (web.D
 		StatusPayment: getOrder.Status,
 		PaymentMethod: getOrder.PaymentMethod,
 	}, nil
+}
+
+func (service *OrderServiceImpl) ChangeOrderStatus(Id string, status web.ChangePaymentRequest) (map[string]interface{}, error) {
+	getOrder, errGetOrder := service.repository.GetOrder(Id)
+
+	if errGetOrder != nil {
+		return nil, errGetOrder
+	}
+
+	if getOrder.Status != domain.Status("MENUNGGU") {
+		return nil, errors.New("status pembayaran tidak dapat diubah")
+	}
+
+	getOrder.Status = domain.Status(status.Status)
+
+	updateOrder, errUpdate := service.repository.ChangeOrderStatus(getOrder)
+
+	if errUpdate != nil {
+		return nil, errUpdate
+	}
+
+	return PaymentResponse{"order_id": updateOrder.OrderID}, nil
 }

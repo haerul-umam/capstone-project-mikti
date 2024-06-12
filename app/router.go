@@ -44,6 +44,7 @@ func Router(
 	adminRoutes.PATCH("/v1/event/:event_id", eventController.UpdateEvent)
 	adminRoutes.DELETE("/v1/event/:event_id", eventController.DeleteEvent)
 	adminRoutes.GET("/v1/event/:event_id", eventController.GetEventAdmin)
+	adminRoutes.POST("/v1/payment/:id/status", orderController.ChangeOrderStatus)
 
 	buyerRoutes := e.Group("/api")
 	buyerRoutes.Use(customMiddleware.JWTProtection())

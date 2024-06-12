@@ -48,3 +48,7 @@ type DetailOrderResponse struct {
 	StatusPayment domain.Status  `json:"status_payment"`
 	PaymentMethod domain.Payment `json:"payment_method"`
 }
+
+type ChangePaymentRequest struct {
+	Status string `validate:"required,status_check" json:"status"`
+}

@@ -1,9 +1,13 @@
 package helper
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+)
 
 func NewValidator() *Validator {
-	return &Validator{validator.New()}
+	validator := validator.New()
+	validator.RegisterValidation("status_check", StatusValidate)
+	return &Validator{validator}
 }
 
 type Validator struct {
@@ -12,4 +16,12 @@ type Validator struct {
 
 func (v *Validator) Validate(i interface{}) error {
 	return v.validator.Struct(i)
+}
+
+func StatusValidate(fi validator.FieldLevel) bool {
+	if fi.Field().String() == "MENUNGGU" || fi.Field().String() == "DITERIMA" || fi.Field().String() == "DITOLAK" {
+		return true
+	}
+
+	return false
 }

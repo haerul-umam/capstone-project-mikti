@@ -69,3 +69,23 @@ func (controller *OrderControllerImpl) DetailOrder(e echo.Context) error {
 
 	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "success", getOrder))
 }
+
+func (controller *OrderControllerImpl) ChangeOrderStatus(e echo.Context) error {
+	stat := new(web.ChangePaymentRequest)
+
+	if err := e.Bind(stat); err != nil {
+		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
+	}
+
+	if err := e.Validate(stat); err != nil {
+		return err
+	}
+
+	changeStatus, errChange := controller.orderService.ChangeOrderStatus(e.Param("id"), *stat)
+
+	if errChange != nil {
+		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, errChange.Error(), nil))
+	}
+
+	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "success", changeStatus))
+}

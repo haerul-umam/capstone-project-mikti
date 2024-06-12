@@ -27,6 +27,9 @@ func BindAndValidate(err error, c echo.Context) {
 			case "len":
 				report.Message = fmt.Sprintf("%s harus terdiri dari 8 karakter", err.Field())
 				report.Code = 400
+			case "status_check":
+				report.Message = fmt.Sprintf("%s pembayaran tidak valid", err.Field())
+				report.Code = 400
 			}
 		}
 	}

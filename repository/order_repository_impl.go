@@ -25,6 +25,18 @@ func (repo *OrderRepositoryImpl) CreateOrder(order domain.Order) (domain.Order, 
 	return order, nil
 }
 
+func (repo *OrderRepositoryImpl) GetOrder(Id string) (domain.Order, error) {
+	var orderData domain.Order
+
+	err := repo.db.First(&orderData, "id = ?", Id).Error
+
+	if err != nil {
+		return domain.Order{}, errors.New("order tidak ditemukan")
+	}
+
+	return orderData, nil
+}
+
 func (repo *OrderRepositoryImpl) GetOrdersPage(limit int, page int) ([]domain.Order, int64, error) {
 	var orders []domain.Order
 	offset := (page - 1) * limit
@@ -76,4 +88,15 @@ func (repo *OrderRepositoryImpl) GetDetailOrder(Id string) (domain.Category, dom
 	}
 
 	return categoryData, orderData, nil
+}
+
+func (repo *OrderRepositoryImpl) ChangeOrderStatus(order domain.Order) (domain.Order, error) {
+
+	err := repo.db.Model(domain.Order{}).Where("id = ?", order.OrderID).Updates(order).Error
+
+	if err != nil {
+		return order, err
+	}
+
+	return order, nil
 }
