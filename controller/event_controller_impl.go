@@ -72,3 +72,32 @@ func (controller *EventControllerImpl) DeleteEvent(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "Event Berhasil Dihapus", nil))
 }
+
+func (controller *EventControllerImpl) GetAllEvents(e echo.Context) error {
+	limit, _ := strconv.Atoi(e.QueryParam("limit"))
+	page, _ := strconv.Atoi(e.QueryParam("page"))
+	priceMax, _ := strconv.Atoi(e.QueryParam("price_max"))
+	priceMin, _ := strconv.Atoi(e.QueryParam("price_min"))
+	city := e.QueryParam("city")
+	date := e.QueryParam("date")
+	categoryId, _ := strconv.Atoi(e.QueryParam("category_id"))
+	filter := e.QueryParam("filter")
+
+	event := web.AllEventDataRequest{
+		PriceMax:   priceMax,
+		PriceMin:   priceMin,
+		City:       city,
+		Date:       date,
+		CategoryId: categoryId,
+		Filter:     web.Filter(filter),
+		Limit:      limit,
+		Page:       page,
+	}
+
+	response, err := controller.eventService.GetAllEvent(event)
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
+	}
+
+	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "sukses", response))
+}

@@ -35,6 +35,7 @@ func Router(
 	e.POST("/v1/register", authController.Register)
 
 	e.GET("/v1/event/:event_id", eventController.GetEvent)
+	e.GET("/v1/event", eventController.GetAllEvents)
 
 	adminRoutes := e.Group("/api/admin")
 	adminRoutes.Use(customMiddleware.JWTProtection())

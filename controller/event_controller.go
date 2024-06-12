@@ -7,4 +7,5 @@ type EventController interface {
 	UpdateEvent(c echo.Context) error
 	DeleteEvent(c echo.Context) error
 	GetEventAdmin(c echo.Context) error
+	GetAllEvents(e echo.Context) error
 }

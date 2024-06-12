@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"math"
 
 	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
@@ -116,4 +117,41 @@ func (service *EventServiceImpl) DeleteEvent(pathId int) error {
 	}
 
 	return nil
+}
+
+func (service *EventServiceImpl) GetAllEvent(request web.AllEventDataRequest) (web.AllEventDataResponse, error) {
+	eventReq := web.AllEventDataRequest{
+		PriceMax:   request.PriceMax,
+		PriceMin:   request.PriceMin,
+		City:       request.City,
+		Date:       request.Date,
+		CategoryId: request.CategoryId,
+		Filter:     request.Filter,
+		Limit:      request.Limit,
+		Page:       request.Page,
+	}
+
+	if eventReq.Limit <= 0 {
+		eventReq.Limit = 10
+	}
+
+	if eventReq.Page <= 0 {
+		eventReq.Page = 1
+	}
+
+	getEvents, total, errGetEvents := service.repository.GetAllEvent(eventReq.PriceMax, eventReq.PriceMin, eventReq.City, eventReq.Date, eventReq.CategoryId, string(eventReq.Filter), eventReq.Limit, eventReq.Page)
+
+	if errGetEvents != nil {
+		return web.AllEventDataResponse{}, errGetEvents
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(eventReq.Limit)))
+	eventEntities := entity.ToEventEntities(getEvents)
+
+	return web.AllEventDataResponse{
+		Total:       total,
+		TotalPages:  totalPages,
+		CurrentPage: eventReq.Page,
+		Events:      eventEntities,
+	}, nil
 }

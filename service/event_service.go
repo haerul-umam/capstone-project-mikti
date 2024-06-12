@@ -9,4 +9,5 @@ type EventService interface {
 	UpdateEvent(request web.EventUpdateServiceRequest, pathID int) (interface{}, error)
 	GetEvent(eventId int, user helper.JwtClaims) (interface{}, error)
 	DeleteEvent(pathId int) error
+	GetAllEvent(request web.AllEventDataRequest) (web.AllEventDataResponse, error)
 }

@@ -23,9 +23,12 @@ type EventEntity struct {
 func ToEventEntity(event domain.Event) EventEntity {
 
 	return EventEntity{
-		EventID:     event.EventID,
-		CategoryID:  event.CategoryID,
-		Category:    Category{},
+		EventID:    event.EventID,
+		CategoryID: event.CategoryID,
+		Category: Category{
+			ID:   event.Category.CategoryID,
+			Name: event.Category.Name,
+		},
 		Name:        event.Name,
 		Date:        event.Date,
 		Price:       event.Price,
@@ -36,12 +39,12 @@ func ToEventEntity(event domain.Event) EventEntity {
 	}
 }
 
-// func ToEventEntities(event []domain.Event) []EventEntity {
-// 	data := []EventEntity{}
+func ToEventEntities(events []domain.Event) []EventEntity {
+	data := []EventEntity{}
 
-// 	for _, event := range events {
-// 		data = appe
-// 	}
+	for _, event := range events {
+		data = append(data, ToEventEntity(event))
+	}
 
-// 	return data
-// }
+	return data
+}
