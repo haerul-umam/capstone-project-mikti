@@ -43,7 +43,7 @@ func (service *EventServiceImpl) GetEvent(eventId int, user helper.JwtClaims) (i
 			Quota:       getEvent.Quota,
 			DeletedAt:   getEvent.DeletedAt,
 			Category: web.Category{
-				Id:   getEvent.Category.CategoryID,
+				Id:   getEvent.Category.ID,
 				Name: getEvent.Category.Name,
 			},
 		}, nil
@@ -63,7 +63,7 @@ func (service *EventServiceImpl) GetEvent(eventId int, user helper.JwtClaims) (i
 			Description: getEvent.Description,
 			Quota:       getEvent.Quota,
 			Category: web.Category{
-				Id:   getEvent.Category.CategoryID,
+				Id:   getEvent.Category.ID,
 				Name: getEvent.Category.Name,
 			},
 		}, nil

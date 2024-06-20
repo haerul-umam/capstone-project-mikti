@@ -55,11 +55,6 @@ type EventDetailResponseAdmin struct {
 	Category    Category       `json:"category"`
 }
 
-type Category struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-}
-
 type Filter string
 
 const (

@@ -33,10 +33,6 @@ type Costumer struct {
 	Name string `json:"name"`
 }
 
-type Category struct {
-	Name string `json:"name"`
-}
-
 type DetailOrderResponse struct {
 	OrderID       string         `json:"order_id"`
 	Costumer      Costumer       `json:"costumer"`

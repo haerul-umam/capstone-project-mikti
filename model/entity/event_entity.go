@@ -26,7 +26,7 @@ func ToEventEntity(event domain.Event) EventEntity {
 		EventID:    event.EventID,
 		CategoryID: event.CategoryID,
 		Category: Category{
-			ID:   event.Category.CategoryID,
+			ID:   event.Category.ID,
 			Name: event.Category.Name,
 		},
 		Name:        event.Name,
