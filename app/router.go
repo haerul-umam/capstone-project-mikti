@@ -1,12 +1,9 @@
 package app
 
 import (
-	"log"
-
 	"github.com/haerul-umam/capstone-project-mikti/controller"
 	"github.com/haerul-umam/capstone-project-mikti/helper"
 	customMiddleware "github.com/haerul-umam/capstone-project-mikti/middleware"
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,11 +16,6 @@ func Router(
 	categoryContoller controller.CategoryEventController,
 
 ) *echo.Echo {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("error loading env file")
-	}
-
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Recover())

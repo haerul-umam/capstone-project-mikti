@@ -6,15 +6,9 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"github.com/joho/godotenv"
 )
 
 func InitConnetion() *gorm.DB {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("error loading env file")
-	}
-
 	dsn := os.Getenv("DSN")
 	configuration := gorm.Config{}
 
