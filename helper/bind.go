@@ -25,10 +25,19 @@ func BindAndValidate(err error, c echo.Context) {
 				report.Message = fmt.Sprintf("%s tidak valid", err.Field())
 				report.Code = 400
 			case "len":
-				report.Message = fmt.Sprintf("%s harus terdiri dari 8 karakter", err.Field())
+				report.Message = fmt.Sprintf("%s harus terdiri dari %s karakter", err.Field(), err.Param())
 				report.Code = 400
 			case "status_check":
 				report.Message = fmt.Sprintf("%s pembayaran tidak valid", err.Field())
+				report.Code = 400
+			case "gte":
+				report.Message = fmt.Sprintf("%s harus lebih atau sama dengan %s", err.Field(), err.Param())
+				report.Code = 400
+			case "gt":
+				report.Message = fmt.Sprintf("%s harus lebih dari %s", err.Field(), err.Param())
+				report.Code = 400
+			default:
+				report.Message = fmt.Sprintf("%s field tidak valid", err.Field())
 				report.Code = 400
 			}
 		}
