@@ -16,6 +16,16 @@ func NewEventRepository(db *gorm.DB) *EventRepositoryImpl {
 	return &EventRepositoryImpl{db}
 }
 
+func (repo *EventRepositoryImpl) CreateEvent(event domain.Event) (domain.Event, error) {
+	err := repo.db.Create(&event).Error
+
+	if err != nil {
+		return domain.Event{}, err
+	}
+
+	return event, nil
+}
+
 func (repo *EventRepositoryImpl) GetEvent(Id int) (domain.Event, error) {
 	var eventData domain.Event
 

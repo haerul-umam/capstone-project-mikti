@@ -12,18 +12,20 @@ import (
 )
 
 type EventServiceImpl struct {
-	repository repository.EventRepository
+	repositoryEvent repository.EventRepository
+	repositoryCategory repository.CategoryRepository
 }
 
-func NewEventService(repository repository.EventRepository) *EventServiceImpl {
+func NewEventService(repoEvent repository.EventRepository, repoCategory repository.CategoryRepository) *EventServiceImpl {
 	return &EventServiceImpl{
-		repository: repository,
+		repositoryEvent: repoEvent,
+		repositoryCategory: repoCategory,
 	}
 }
 
 func (service *EventServiceImpl) GetEvent(eventId int, user helper.JwtClaims) (interface{}, error) {
 
-	getEvent, errGetEvent := service.repository.GetEvent(eventId)
+	getEvent, errGetEvent := service.repositoryEvent.GetEvent(eventId)
 
 	if user.ID != "" {
 
@@ -71,8 +73,52 @@ func (service *EventServiceImpl) GetEvent(eventId int, user helper.JwtClaims) (i
 	}
 }
 
+func (service *EventServiceImpl) CreateEvent(request web.EventCreateServiceRequest) (web.EventUpdateCreateResponse, error) {
+	if request.Is_free && request.Price > 0 {
+		return web.EventUpdateCreateResponse{}, errors.New("price harus kosong atau nol")
+	}
+
+	if !request.Is_free && request.Price == 0 {
+		return web.EventUpdateCreateResponse{}, errors.New("price tidak boleh kosong atau nol")
+	}
+
+	_, err := service.repositoryCategory.GetCategory(request.CategoryID)
+
+	if err != nil {
+		return web.EventUpdateCreateResponse{}, err
+	}
+
+	eventRequest := domain.Event{
+		CategoryID: request.CategoryID,
+		Name: request.Name,
+		Date: request.Date,
+		Price: request.Price,
+		City: request.City,
+		Is_free: request.Is_free,
+		Description: request.Description,
+		Quota: request.Quota,
+	}
+	event, err := service.repositoryEvent.CreateEvent(eventRequest)
+
+	if err != nil {
+		return web.EventUpdateCreateResponse{}, err
+	}
+
+	return web.EventUpdateCreateResponse{
+		ItemID: event.EventID,
+		Name: event.Name,
+		Price: event.Price,
+		Date: event.Date,
+		Is_free: event.Is_free,
+		City: event.City,
+		Description: event.Description,
+		Quota: event.Quota,
+		CategoryID: event.CategoryID,
+	}, nil
+}
+
 func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceRequest, pathID int) (interface{}, error) {
-	getEventById, err := service.repository.GetEvent(pathID)
+	getEventById, err := service.repositoryEvent.GetEvent(pathID)
 
 	if err != nil {
 		return getEventById, err
@@ -90,13 +136,13 @@ func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceReque
 		Quota:       request.Quota,
 	}
 
-	eventUpdate, errUpdate := service.repository.UpdateEvent(eventRequest)
+	eventUpdate, errUpdate := service.repositoryEvent.UpdateEvent(eventRequest)
 
 	if errUpdate != nil {
 		return entity.ToEventEntity(eventUpdate), errUpdate
 	}
 
-	return web.EventUpdateResponse{
+	return web.EventUpdateCreateResponse{
 		ItemID:      getEventById.EventID,
 		CategoryID:  request.CategoryID,
 		Name:        request.Name,
@@ -110,7 +156,7 @@ func (service *EventServiceImpl) UpdateEvent(request web.EventUpdateServiceReque
 }
 
 func (service *EventServiceImpl) DeleteEvent(pathId int) error {
-	err := service.repository.DeleteEvent(pathId)
+	err := service.repositoryEvent.DeleteEvent(pathId)
 
 	if err != nil {
 		return err
@@ -139,7 +185,7 @@ func (service *EventServiceImpl) GetAllEvent(request web.AllEventDataRequest) (w
 		eventReq.Page = 1
 	}
 
-	getEvents, total, errGetEvents := service.repository.GetAllEvent(eventReq.PriceMax, eventReq.PriceMin, eventReq.City, eventReq.Date, eventReq.CategoryId, string(eventReq.Filter), eventReq.Limit, eventReq.Page)
+	getEvents, total, errGetEvents := service.repositoryEvent.GetAllEvent(eventReq.PriceMax, eventReq.PriceMin, eventReq.City, eventReq.Date, eventReq.CategoryId, string(eventReq.Filter), eventReq.Limit, eventReq.Page)
 
 	if errGetEvents != nil {
 		return web.AllEventDataResponse{}, errGetEvents

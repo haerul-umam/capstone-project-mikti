@@ -52,6 +52,16 @@ func (repo *CategoryRepositoryImpl) UpdateCategory(category domain.Category) (do
 	return category, nil
 }
 
+func (repo *CategoryRepositoryImpl) GetCategory(id int) (domain.Category, error) {
+	var category domain.Category
+	err := repo.db.First(&category, "id = ?", id).Error
+	if err != nil {
+		return domain.Category{}, errors.New("category tidak di temukan")
+	}
+
+	return category, nil
+}
+
 func (repo *CategoryRepositoryImpl) DeleteCategory(id int) error {
 	var category domain.Category
 	result := repo.db.First(&category, id)

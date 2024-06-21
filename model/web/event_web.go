@@ -16,7 +16,18 @@ type EventUpdateServiceRequest struct {
 	Quota       int    `json:"quota"`
 }
 
-type EventUpdateResponse struct {
+type EventCreateServiceRequest struct {
+	CategoryID  int    `validate:"gt=1" json:"category_id"`
+	Name        string `validate:"required" json:"name"`
+	Date        string `validate:"required" json:"date"`
+	Price       int    `validate:"gte=0" json:"price"`
+	Is_free     bool   `validate:"boolean" json:"is_free"`
+	City        string `validate:"required" json:"city"`
+	Description string `validate:"required" json:"description"`
+	Quota       int    `validate:"gt=1" json:"quota"`
+}
+
+type EventUpdateCreateResponse struct {
 	ItemID      int    `json:"item_id"`
 	CategoryID  int    `json:"category_id"`
 	Name        string `json:"name"`

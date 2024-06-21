@@ -20,6 +20,26 @@ func NewEventController(service service.EventService) *EventControllerImpl {
 	}
 }
 
+func (controller *EventControllerImpl) CreateEvent(c echo.Context) error {
+	eventBody := new(web.EventCreateServiceRequest)
+
+	if err := c.Bind(eventBody); err != nil {
+		return c.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
+	}
+
+	if err := c.Validate(eventBody); err != nil {
+		return err
+	}
+
+	event, err := controller.eventService.CreateEvent(*eventBody)
+
+	if err != nil {
+		return c.JSON(http.StatusNotFound, web.ResponseToClient(http.StatusNotFound, err.Error(), nil))
+	}
+
+	return c.JSON(http.StatusCreated, web.ResponseToClient(http.StatusCreated, "Sukses membuat event", event))
+}
+
 func (controller *EventControllerImpl) GetEvent(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("event_id"))
 

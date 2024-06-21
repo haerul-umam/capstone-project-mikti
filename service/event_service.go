@@ -6,6 +6,7 @@ import (
 )
 
 type EventService interface {
+	CreateEvent(request web.EventCreateServiceRequest) (web.EventUpdateCreateResponse, error)
 	UpdateEvent(request web.EventUpdateServiceRequest, pathID int) (interface{}, error)
 	GetEvent(eventId int, user helper.JwtClaims) (interface{}, error)
 	DeleteEvent(pathId int) error
