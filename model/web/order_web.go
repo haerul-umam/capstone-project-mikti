@@ -52,3 +52,54 @@ type DetailOrderResponse struct {
 type ChangePaymentRequest struct {
 	Status string `validate:"required,status_check" json:"status"`
 }
+
+type StatusPayment string
+
+const (
+	Menunggu   StatusPayment = "MENUNGGU"
+	Diterima   StatusPayment = "DITERIMA"
+	Ditolak 	 StatusPayment = "DITOLAK"
+)
+
+type AllPaymentQueryRequest struct {
+	Status     StatusPayment	`query:"status" validate:"required,status_check"`
+	Limit      int						`query:"limit" validate:"required,gte=1,lte=100"`
+	Page       int 						`query:"page" validate:"required,gte=1"`
+}
+
+type AllPayment struct {
+	OrderID       string         `json:"order_id"`
+	Costumer      Costumer       `json:"costumer"`
+	NameEvent     string         `json:"name_event"`
+	DateEvent     string         `json:"date_event"`
+	CreatedAt			string				 `json:"order_date"`
+	Amount        int            `json:"amount"`
+	City          string         `json:"city"`
+	StatusPayment domain.Status  `json:"status_payment"`
+}
+
+type AllPaymentDataResponse struct {
+	Total       int64                `json:"total"`
+	TotalPages  int                  `json:"totalPages"`
+	CurrentPage int                  `json:"currentPage"`
+	Payments    []AllPayment 				 `json:"payments"`
+}
+
+func ToPaymentList(payments []domain.Order) []AllPayment {
+	data := []AllPayment{}
+
+	for _, payment := range payments {
+		data = append(data, AllPayment{
+			OrderID: payment.OrderID,
+			Costumer: Costumer{payment.User.Name},
+			NameEvent: payment.NameEvent,
+			DateEvent: payment.DateEvent,
+			CreatedAt: payment.CreatedAt.String(),
+			Amount: payment.Amount,
+			City: payment.City,
+			StatusPayment: payment.Status,
+		})
+	}
+
+	return data
+}

@@ -37,6 +37,7 @@ func Router(
 	adminRoutes.DELETE("/v1/event/:event_id", eventController.DeleteEvent)
 	adminRoutes.GET("/v1/event/:event_id", eventController.GetEventAdmin)
 	adminRoutes.POST("/v1/payment/:id/status", orderController.ChangeOrderStatus)
+	adminRoutes.GET("/v1/payment", orderController.GetAllPayment)
 	adminRoutes.POST("/v1/event", eventController.CreateEvent)
 
 	buyerRoutes := e.Group("/api")

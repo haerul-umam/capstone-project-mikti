@@ -7,4 +7,5 @@ type OrderController interface {
 	GetOrdersPage(e echo.Context) error
 	DetailOrder(e echo.Context) error
 	ChangeOrderStatus(e echo.Context) error
+	GetAllPayment(e echo.Context) error
 }

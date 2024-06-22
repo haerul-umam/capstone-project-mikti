@@ -149,3 +149,20 @@ func (service *OrderServiceImpl) ChangeOrderStatus(Id string, status web.ChangeP
 
 	return PaymentResponse{"order_id": updateOrder.OrderID}, nil
 }
+
+func (service *OrderServiceImpl) GetAllPayment(request web.AllPaymentQueryRequest) (web.AllPaymentDataResponse, error) {
+	payments, count, err := service.repository.GetAllPayment(request)
+
+	if err != nil {
+		return web.AllPaymentDataResponse{}, err
+	}
+
+	totalPages := int(math.Ceil(float64(count) / float64(request.Limit)))
+
+	return web.AllPaymentDataResponse{
+		Total: count,
+		TotalPages: totalPages,
+		CurrentPage: request.Page,
+		Payments: web.ToPaymentList(payments),
+	}, nil
+}

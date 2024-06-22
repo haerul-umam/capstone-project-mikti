@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/haerul-umam/capstone-project-mikti/model/web"
@@ -88,4 +89,28 @@ func (controller *OrderControllerImpl) ChangeOrderStatus(e echo.Context) error {
 	}
 
 	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "success", changeStatus))
+}
+
+func (controller *OrderControllerImpl) GetAllPayment(e echo.Context) error {
+	limit, _ := strconv.Atoi(e.QueryParam("limit"))
+	page, _ := strconv.Atoi(e.QueryParam("page"))
+	status := e.QueryParam("status")
+
+	queryParams := web.AllPaymentQueryRequest{
+		Status: web.StatusPayment(status),
+		Page: page,
+		Limit: limit,
+	}
+
+	if err := e.Validate(queryParams); err != nil {
+		return err
+	}
+
+	data, err := controller.orderService.GetAllPayment(queryParams)
+
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
+	}
+
+	return e.JSON(http.StatusOK, web.ResponseToClient(http.StatusOK, "sukses", data))
 }

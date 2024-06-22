@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
+	"github.com/haerul-umam/capstone-project-mikti/model/web"
 	"gorm.io/gorm"
 )
 
@@ -99,4 +100,23 @@ func (repo *OrderRepositoryImpl) ChangeOrderStatus(order domain.Order) (domain.O
 	}
 
 	return order, nil
+}
+
+func (repo *OrderRepositoryImpl) GetAllPayment(query web.AllPaymentQueryRequest) ([]domain.Order, int64, error) {
+	limit := query.Limit
+	page := query.Page
+	status := query.Status
+
+	orders := repo.db.Model(&domain.Order{}).Preload("User")
+
+	var result []domain.Order
+	orders.Scopes(Paginate(page, limit)).Preload("User").Where("status = ?", status).Find(&result)
+
+	var total int64
+	err := orders.Count(&total).Error
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return result, total, nil
 }
