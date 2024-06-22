@@ -33,6 +33,7 @@ type config struct {
 	SecretKey     	string      `env:"SECRET_KEY,required"`
 	DSN         	 	string      `env:"DSN,required"`
 	ExpiredToken  	int         `env:"EXPIRED_TOKEN,required" envDefault:"240"`
+	ENV             string			`env:"ENV,required" envDefault:"development"`
 }
 
 func ValidateEnv() {
