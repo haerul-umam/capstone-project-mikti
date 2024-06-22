@@ -1,18 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/haerul-umam/capstone-project-mikti/app"
-	"github.com/haerul-umam/capstone-project-mikti/helper"
+	"github.com/haerul-umam/capstone-project-mikti/config"
 )
 
 func main() {
-	helper.ValidateEnv()
+	config.ValidateEnv()
+	env := config.GetEnv().Env
 
-	env := os.Getenv("ENV")
-	fmt.Println(env, "ini")
 	if env == "production" {
 		app.Migrate()
 	}

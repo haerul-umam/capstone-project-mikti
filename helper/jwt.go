@@ -2,9 +2,9 @@ package helper
 
 import (
 	"errors"
-	"os"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/haerul-umam/capstone-project-mikti/config"
 	"github.com/labstack/echo/v4"
 )
 
@@ -28,7 +28,7 @@ func NewTokenUseCase() *TokenUseCaseImpl {
 func (t *TokenUseCaseImpl) GenerateAccessToken(claims JwtClaims) (string, error) {
 	plainToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	encodedToken, err := plainToken.SignedString([]byte(os.Getenv("SECRET_KEY")))
+	encodedToken, err := plainToken.SignedString([]byte(config.GetEnv().SecretKey))
 	if err != nil {
 		return "", err
 	}

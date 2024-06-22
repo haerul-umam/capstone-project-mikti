@@ -2,11 +2,10 @@ package service
 
 import (
 	"errors"
-	"os"
-	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/haerul-umam/capstone-project-mikti/config"
 	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/haerul-umam/capstone-project-mikti/model/domain"
 	"github.com/haerul-umam/capstone-project-mikti/model/web"
@@ -36,7 +35,7 @@ func (service *UserServiceImpl) LoginUser(email, password string) (web.UserLogin
 		return web.UserLoginResponse{}, errors.New("user atau password salah")
 	}
 
-	expired_minutes, _ := strconv.Atoi(os.Getenv("EXPIRED_TOKEN"))
+	expired_minutes := config.GetEnv().ExpiredToken
 
 	expired := time.Now().Local().Add(time.Duration(expired_minutes) * time.Minute)
 
@@ -83,7 +82,7 @@ func (service *UserServiceImpl) SaveUser(request web.UserRegisterRequest) (web.U
 		return web.UserRegisterResponse{}, errSaveUser
 	}
 
-	expired_minutes, _ := strconv.Atoi(os.Getenv("EXPIRED_TOKEN"))
+	expired_minutes := config.GetEnv().ExpiredToken
 
 	expired := time.Now().Local().Add(time.Duration(expired_minutes) * time.Minute)
 

@@ -2,8 +2,8 @@ package midleware
 
 import (
 	"net/http"
-	"os"
 
+	"github.com/haerul-umam/capstone-project-mikti/config"
 	"github.com/haerul-umam/capstone-project-mikti/helper"
 	"github.com/haerul-umam/capstone-project-mikti/model/web"
 	"github.com/labstack/echo/v4"
@@ -17,7 +17,7 @@ func JWTProtection() echo.MiddlewareFunc {
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(helper.JwtClaims)
 		},
-		SigningKey: []byte(os.Getenv("SECRET_KEY")),
+		SigningKey: []byte(config.GetEnv().SecretKey),
 		ErrorHandler: func(c echo.Context, err error) error {
 			return c.JSON(
 				http.StatusUnauthorized,
