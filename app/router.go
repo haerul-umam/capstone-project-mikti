@@ -3,9 +3,9 @@ package app
 import (
 	"github.com/haerul-umam/capstone-project-mikti/controller"
 	"github.com/haerul-umam/capstone-project-mikti/helper"
-	customMiddleware "github.com/haerul-umam/capstone-project-mikti/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/haerul-umam/capstone-project-mikti/app/routes"
 )
 
 func Router(
@@ -22,35 +22,9 @@ func Router(
 	e.Validator = helper.NewValidator()
 	e.HTTPErrorHandler = helper.BindAndValidate
 
-	// Auth Controller
-	e.POST("/v1/login", authController.Login)
-	e.POST("/v1/register", authController.Register)
-
-	e.GET("/v1/event/:event_id", eventController.GetEvent)
-	e.GET("/v1/event", eventController.GetAllEvents)
-
-	adminRoutes := e.Group("/api/admin")
-	adminRoutes.Use(customMiddleware.JWTProtection())
-	adminRoutes.Use(customMiddleware.JWTAuthRole("ADMIN"))
-	adminRoutes.GET("/v1/order", orderController.GetOrdersPage)
-	adminRoutes.PATCH("/v1/event/:event_id", eventController.UpdateEvent)
-	adminRoutes.DELETE("/v1/event/:event_id", eventController.DeleteEvent)
-	adminRoutes.GET("/v1/event/:event_id", eventController.GetEventAdmin)
-	adminRoutes.POST("/v1/payment/:id/status", orderController.ChangeOrderStatus)
-	adminRoutes.GET("/v1/payment", orderController.GetAllPayment)
-	adminRoutes.POST("/v1/event", eventController.CreateEvent)
-
-	buyerRoutes := e.Group("/api")
-	buyerRoutes.Use(customMiddleware.JWTProtection())
-	buyerRoutes.Use(customMiddleware.JWTAuthRole("BUYER"))
-	buyerRoutes.POST("/v1/order", orderController.CreateOrder)
-	buyerRoutes.GET("/v1/detail/:id", orderController.DetailOrder)
-
-	// Category Controller
-	adminRoutes.POST("/v1/category", categoryContoller.NewCategory)
-	adminRoutes.GET("/v1/categories", categoryContoller.GetCategoryList)
-	adminRoutes.PATCH("/v1/category/:id", categoryContoller.UpdateCategory)
-	adminRoutes.DELETE("/v1/category/:id", categoryContoller.DeleteCategory)
+	routes.PublicRoutes(e, authController, eventController)
+	routes.AdminRoutes(e, eventController, orderController, categoryContoller)
+	routes.BuyerRoutes(e, orderController)
 
 	return e
 }

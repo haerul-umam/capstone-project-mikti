@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/haerul-umam/capstone-project-mikti/app"
 	"github.com/haerul-umam/capstone-project-mikti/config"
 )
@@ -15,6 +17,6 @@ func main() {
 
 	server := StartServer()
 	if err := server.Start(":8000"); err != nil {
-		return
+		log.Fatal(err)
 	}
 }
