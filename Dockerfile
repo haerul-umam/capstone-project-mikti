@@ -16,6 +16,8 @@ WORKDIR /app
 
 COPY --from=build /app/server .
 
+COPY --from=build /app/migrations ./migrations
+
 RUN touch .env
 
 EXPOSE 8000
