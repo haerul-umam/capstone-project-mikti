@@ -18,8 +18,8 @@ type OrderResponse struct {
 }
 
 type OrdersPageRequest struct {
-	Limit int `json:"limit"`
-	Page  int `json:"page"`
+	Limit      int						`query:"limit" validate:"required,gte=1,lte=100"`
+	Page       int 						`query:"page" validate:"required,gte=1"`
 }
 
 type OrdersPageResponse struct {

@@ -43,17 +43,19 @@ func (controller *OrderControllerImpl) CreateOrder(e echo.Context) error {
 }
 
 func (controller *OrderControllerImpl) GetOrdersPage(e echo.Context) error {
-	order := new(web.OrdersPageRequest)
+	limit, _ := strconv.Atoi(e.QueryParam("limit"))
+	page, _ := strconv.Atoi(e.QueryParam("page"))
 
-	if err := e.Bind(&order); err != nil {
-		return e.JSON(400, web.ResponseToClient(400, err.Error(), nil))
+	queryParams := web.OrdersPageRequest{
+		Page: page,
+		Limit: limit,
 	}
 
-	if err := e.Validate(order); err != nil {
+	if err := e.Validate(queryParams); err != nil {
 		return err
 	}
 
-	orderData, err := controller.orderService.GetOrderListOnPage(*order)
+	orderData, err := controller.orderService.GetOrderListOnPage(queryParams)
 	if err != nil {
 		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
 	}
