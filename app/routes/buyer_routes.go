@@ -15,5 +15,5 @@ func BuyerRoutes(
 	buyer.Use(middleware.JWTAuthRole("BUYER"))
 
 	buyer.POST("/v1/order", orderController.CreateOrder)
-	buyer.GET("/v1/detail/:id", orderController.DetailOrder)
+	buyer.GET("/v1/order/:id", orderController.DetailOrder)
 }

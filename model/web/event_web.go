@@ -17,7 +17,7 @@ type EventUpdateServiceRequest struct {
 }
 
 type EventCreateServiceRequest struct {
-	CategoryID  int    `validate:"gt=1" json:"category_id"`
+	CategoryID  int    `validate:"gt=0" json:"category_id"`
 	Name        string `validate:"required" json:"name"`
 	Date        string `validate:"required" json:"date"`
 	Price       int    `validate:"gte=0" json:"price"`

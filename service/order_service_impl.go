@@ -122,7 +122,7 @@ func (service *OrderServiceImpl) GetDetailOrder(Id string, userID string) (web.D
 		IsFree:        getOrder.IsFree,
 		City:          getOrder.City,
 		Description:   getOrder.Description,
-		Category:      web.Category{Name: category.Name},
+		Category:      web.Category{Name: category.Name, Id: category.ID},
 		StatusPayment: getOrder.Status,
 		PaymentMethod: getOrder.PaymentMethod,
 	}, nil
