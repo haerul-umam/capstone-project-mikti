@@ -12,7 +12,7 @@ Ticketing API with Go
 
 ## API Spec
 
-[Apidog](https://j2ifittolg.apidog.io)
+[Apidog](https://9gewuke275.apidog.io)
 
 
 ## Contributors
