@@ -24,8 +24,8 @@ func BindAndValidate(err error, c echo.Context) {
 			case "email":
 				report.Message = fmt.Sprintf("%s tidak valid", err.Field())
 				report.Code = 400
-			case "len":
-				report.Message = fmt.Sprintf("%s harus terdiri dari %s karakter", err.Field(), err.Param())
+			case "min":
+				report.Message = fmt.Sprintf("%s harus terdiri dari minimal %s karakter", err.Field(), err.Param())
 				report.Code = 400
 			case "status_check":
 				report.Message = fmt.Sprintf("%s pembayaran tidak valid", err.Field())

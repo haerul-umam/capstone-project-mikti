@@ -14,7 +14,7 @@ type UserLoginResponse struct {
 type UserRegisterRequest struct {
 	Name     string `validate:"required" json:"name"`
 	Email    string `validate:"required,email" json:"email"`
-	Password string `validate:"required,len=8" json:"password"`
+	Password string `validate:"required,min=8" json:"password"`
 }
 
 type UserRegisterResponse struct {

@@ -41,7 +41,7 @@ func (controller *AuthControllerImpl) Login(e echo.Context) error {
 func (controller *AuthControllerImpl) Register(e echo.Context) error {
 	user := new(web.UserRegisterRequest)
 
-	if err := e.Bind(user); err != nil {
+	if err := e.Bind(&user); err != nil {
 		return e.JSON(http.StatusBadRequest, web.ResponseToClient(http.StatusBadRequest, err.Error(), nil))
 	}
 
